@@ -1,0 +1,40 @@
+{% extends "site_base.html" %}
+
+{% block title%}Category list{% endblock %}
+{% block content %}        
+<p>
+    <a class='button' href='?csv=true'>Export csv</a>
+</p>
+
+
+
+<table>
+    <thead>
+        <tr>
+            <th>Edit</th>
+            <th>Title</th>
+            <th># articles</th>
+            <th># documents</th>
+            <th>Add</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for cat in categories %}
+            <tr>
+        
+                <td><a href='{% url "category-update" cat.id %}'>{{ cat.id }}</a></td>
+                <td>{{ cat.name }}</td>
+                <td>{{ cat.article_cnt }}</td>
+                <td>{{ cat.document_cnt }}</td>
+                <td>
+                    <a href='{% url "article-create" %}?category={{ cat.id }}' >Article</a>
+                    |
+                    <a href='{% url "document-create" %}?category={{ cat.id }}' >Document</a>
+                </td>
+            </tr>
+        {% endfor %}
+    <tbody>
+</table>
+
+
+{% endblock %}

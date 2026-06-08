@@ -1,0 +1,90 @@
+{% extends "site_base.html" %}
+
+{% block title%}Document list{% endblock %}
+{% block extra_style%}
+<style>
+    form {
+        display: inline;
+        margin-bottom: 0em;
+        
+    }
+    
+    input[type="submit"] {
+        white-space: nowrap;
+        background-color: #2c8898;
+        color: #f9f9f9;
+        border-radius: 1px;
+        border: 1px solid #2c8898;
+        font-family: serif;
+        padding: 5px 10px;
+    }
+    
+    .button {
+        line-height: 1.15;
+    }
+    
+</style>
+{% endblock %}
+{% block content %}        
+
+<p>
+    <form method='GET'>
+        {{ filter.form }}
+        <input type='submit' value='Filter' />
+    </form>
+    <a class='button' href='?csv=true'>Export csv</a>
+</p>
+
+<table>
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Control</th>
+            <th>Title</th>
+            <th>Status</th>
+            <th>Category</th>
+            <th>Owner</th>
+            <th>File</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for doc in documents %}
+            <tr>
+        
+                <td>{{ doc.id }}</td>
+                <td>
+                    <a class='button' href='{% url "document-detail" doc.id %}'>View</a>
+                    <a class='button' href='{% url "document-update" doc.id %}'>Edit</a>
+                    {% if doc.status == 'DRAFT' %}
+                        <form method='POST' action='{% url "document-remove" doc.id %}'>{% csrf_token %}<input class='button' type='submit' value='Remove'></input></form>
+                    {% endif %}
+                    
+                    {% if doc.status != 'DRAFT' %}
+                        <form method='POST' action='{% url "document-unpublish" doc.id %}'>{% csrf_token %}<input class='button' type='submit' value='Make draft'></input></form>
+                    {% endif %}
+                </td>
+                <td>{{ doc.description }}</td>
+                <td>{{ doc.get_status_display }}</td>
+                <td>{{ doc.category }}</td>
+                <td>{{ doc.owned_by }}</td>
+                <td><a href='{{ doc.file.url }}'>{{ doc.file }}</a></td>
+            </tr>
+        {% endfor %}
+    <tbody>
+</table>
+
+{% endblock %}
+
+{% block extra_script %}
+    <script>
+        var showMore = function(id) {
+            console.log("SHOW MORE ", id);
+            fetch('/djangocbv/articles/detail/' + id +'/?partial=true').then(function(response) {
+                return response.text().then(function(text) {
+                    alert(text)
+                });
+            })
+        }
+        
+    </script>
+{% endblock %}

@@ -1,0 +1,62 @@
+{% load custom_tags %}
+<html>
+    <head>
+        <link rel="stylesheet" href="https://unpkg.com/normalize.css@7.0.0/normalize.css" type="text/css"/>
+        <link rel="stylesheet" href="https://unpkg.com/sakura.css/css/sakura.css" type="text/css">
+        <style>
+            .footer {
+                margin-top: 5em;
+                font-size: 0.7em;
+            }
+            
+            .error {
+                color: red;
+                border: 1px solid red;
+                border-radius: 5px;
+                padding: 5px;
+            }
+            
+            .account {
+                float: right;
+            
+            }
+            
+            .clarify {
+                clear: both;
+            }
+            
+            .success {
+                color: green;
+                border: 1px solid green;
+                border-radius: 5px;
+                padding: 5px;
+                list-style-type: none;
+            }
+        </style>
+        {% block extra_style %}
+        {% endblock %}
+    </head>
+    <body>
+        <header class="header">
+            <h2>{% block title %}{% endblock %}</h1>
+            <a href='{% url "home" %}'>Home</a>
+            | 
+            <a href='{% url "template-show" "help" %}'>Help</a>
+            |
+            <a href='{% url "template-show" "about" %}'>About</a>
+            {% include '_partial_account.html' %}
+            <div class='clarify'></div>
+            {% include '_partial_messages.html' %}
+            
+        </header>
+        {% block content %}
+        {% endblock %}
+        <footer class='footer' >
+            <div>
+                You are at: {{ request.path }}
+            </div>
+        </footer>
+        {% block extra_script %}
+        {% endblock %}
+    </body>
+</html>

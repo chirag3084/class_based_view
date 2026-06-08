@@ -1,0 +1,12 @@
+{% extends "site_base.html" %}
+
+{% block title%}Category form{% endblock %}
+{% block content %}        
+
+<form method='POST' >
+    {{ form }}
+    {% csrf_token %}
+    <input type='submit' value='Ok'>
+</form>
+
+{% endblock %}
